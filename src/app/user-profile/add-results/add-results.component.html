@@ -1,0 +1,120 @@
+<mat-tab-group>
+  <mat-tab label="Online">
+    <mat-vertical-stepper [linear]="isLinear" #stepper>
+      <!-- First Select a format (Contructed/Limited) -->
+      <mat-step [stepControl]="formatGroup">
+        <form [formGroup]="formatGroup">
+          <ng-template matStepLabel>Select a Format</ng-template>
+          <mat-form-field> <!-- A dropdown menu to select either Contructed or Limited. -->
+            <mat-select #formatSelector placeholder="Format">
+              <mat-option *ngFor="let format of formats" [value]="format.value">
+                {{format.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+<!-- Displays a selector of constructed formats, if constructed is selected as the format type. -->
+          <div *ngIf="formatSelector.value === 'Constructed'">
+            <mat-form-field>
+              <mat-select #constructedSelector placeholder="Constructed Format">
+                <mat-option *ngFor="let subformat of constructed" [value]="subformat.value">
+                  {{subformat.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+<!-- Displays a selector of limited formats, if limited is selected as the format type. -->
+          <div *ngIf="formatSelector.value === 'Limited'">
+            <mat-form-field>
+              <mat-select #limitedSelector placeholder="Limited Format">
+                <mat-option *ngFor="let subformat of limited" [value]="subformat.value">
+                  {{subformat.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Second, select a subformat (Standard, Draft, etc.) -->
+      <mat-step [stepControl]="tournamentGroup">
+        <form [formGroup]="tournamentGroup">
+          <ng-template matStepLabel>Tournament Type</ng-template>
+<!-- Reveals a selector with constructed tournament types -->
+          <div *ngIf="formatSelector.value === 'Constructed'">
+            <mat-form-field>
+              <mat-select #tournamentSelector placeholder="League type">
+                <mat-option *ngFor="let conTourney of contructedTournament " [value]="conTourney.name">
+                  {{conTourney.viewName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Need to keep limitedSelector in scope to use with ngIf for tournament selection -->
+          <!-- Currently, only draft is displayed. -->
+          <div *ngIf="formatSelector.value === 'Limited'">
+            <mat-form-field>
+              <mat-select #tournamentSelector placeholder="{{formatSelector.value}} League type">
+                <mat-option *ngFor="let limTourney of draftTournament " [value]="limTourney.name">
+                  {{limTourney.viewName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+<!-- The user inputs deck information here. -->
+      <mat-step [stepControl]="deckGroup">
+        <form [formGroup]="deckGroup">
+          <ng-template matStepLabel>Submit Deck</ng-template>
+          <p>
+            A button to import a deck from a file
+          </p>
+          <p>
+            A Selector of user saved deck lists
+          </p>
+          <p>
+            An input field that a user types the card lists
+            and is formatted after sent.
+          </p>
+        </form>
+      </mat-step>
+<!-- The user inputs the round results here. -->
+      <mat-step [stepControl]="resultGroup">
+        <form [formGroup]="resultGroup">
+          <ng-template matStepLabel>Enter Tournament Result</ng-template>
+            <p>
+              A multi-field form will appear for the user to enter the Opponent's
+              deck for each round, either w/l for each game, w/l/d for the round.
+            </p>
+        </form>
+      </mat-step>
+
+<!-- The user submits the information once completed, or can reset the form. -->
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+          <!-- Need a submit button. -->
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </mat-tab>
+
+  <mat-tab label="Paper">
+    Not yet
+  </mat-tab>
+</mat-tab-group>

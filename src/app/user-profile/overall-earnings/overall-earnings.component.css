@@ -1,0 +1,17 @@
+
+.example-card {
+  /* Need to adjust styling for mobile & desktop */
+  max-width: 90%;
+  background-color: #F0F0F0;
+}
+
+mat-card-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 5%;
+}
+
+mat-card-content {
+  text-align: center;
+  font-size: 1em;
+}
